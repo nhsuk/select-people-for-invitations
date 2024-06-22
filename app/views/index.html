@@ -4,86 +4,148 @@
 
 <!-- Extends the layout from /views/layout.html -->
 {% extends 'layout.html' %}
-<!-- 
-  In /views/layout.html you can:
-    - change the header and footer 
-    - add custom CSS and JavaScript
--->
 
-<!-- Set the page title -->
-{% block pageTitle %}
-  NHS.UK prototype kit
+
+
+{% block header %}
+{{ header({
+  "service": {
+    "name": "Select People for Invitations"
+  },
+  "showNav": "false",
+  "showSearch": "false",
+  "searchAction": " "
+  })
+}}
+
+
 {% endblock %}
 
-<!-- For adding a breadcrumb -->
-<!-- Code examples can be found at https://service-manual.nhs.uk/design-system/components/breadcrumbs -->
+
+{% block pageTitle %}
+    {{serviceName}}
+{% endblock %}
+
 {% block beforeContent %}
 {% endblock %}
 
-<!-- For adding a back link -->
-<!-- Code examples can be found at https://service-manual.nhs.uk/design-system/components/back-link -->
 {% block outerContent %}
 {% endblock %}
-
-<!-- For adding page content -->
-<!-- Page layout code can be found at https://service-manual.nhs.uk/design-system/styles/layout -->
 {% block content %}
+
+{% set latestVersion = 'v007' %}
+{% set v007HTML %}
+
+<h2 class="nhsuk-heading-l">Pages</h2>
+
+{% set latestDir = '/'+latestVersion %}
+
+{% set newWD = workingD.split('/') %}
+
+
+
+{% for items in filesArray %}
+<ul>
+<li>{{ items }}</li>
+</ul>
+{% endfor %}
+
+
+
+<!-- {% include 'listing.html' %} -->
+
+{% endset %}
+{% set v002HTML %}
+
+<h2 class="nhsuk-heading-l">Pages</h2>
+{% endset %}
+
+{% set v001HTML %}
+<h2 class="nhsuk-heading-l">Pages</h2>
+<p id="list">LIST</p>
+{% endset %}
+
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
+      <span class="nhsuk-caption-l nhsuk-caption--top">Prototype {{latestVersion}}</span>
 
-      <!-- Change the page title here -->
-      <h1>
-        NHS.UK prototype kit
-        <span class="nhsuk-caption-xl nhsuk-caption--bottom">Version {{version}}</span>
-      </h1>
 
-      <!-- Add your content here -->
-      <!-- Styles and components can be found at https://service-manual.nhs.uk/design-system -->
+      <h1 class="nhsuk-heading-xl">Select People for Invitations</h1>
 
-      <p class="nhsuk-lede-text">
-        This kit lets you rapidly create HTML prototypes of NHS services.
-      </p>
 
-      <hr>
 
-      <h2>
-        About this page
-      </h2>
+      {% from 'button/macro.njk' import button %}
 
-      <p>
-        Use this page as the index for your project.
-      </p>
-      
-      <p>
-        You'll find the code for this page at <strong>/app/views/index.html</strong>.
-      </p>
+      {{ button({
+          "href": "v007/home",
+          "text": "Launch prototype"
+      }) }}
+{% set storedHTML %}
 
-      <p>
-        There is also an <a href="/page-example">example page</a>, which contains a selection of NHS.UK frontend styles and components.
-      </p>
+      {% if data|length == 0 %}
 
-      <hr>
+      {% from 'warning-callout/macro.njk' import warningCallout %}
 
-      <h2>
-        Get started
-      </h2>
+      {{ warningCallout({
+        "heading": "Prototype session data",
+        "HTML": "<p>There is an absence of any session data stored. Sorry.</p>"
+      }) }}
 
-      <p>Get started by using the:</p>
+      {% else %}
 
-      <ul>
-        <li>
-          <a href="/docs/how-tos">how to guides</a>
-        </li>
-        <li>
-          <a href="/docs/page-templates">page templates</a>
-        </li>
-        <li>
-          code snippets for styles and components from the <a href="https://service-manual.nhs.uk/design-system">NHS digital service manual</a>
-        </li>
-      </ul>
 
-      <!-- End of content -->
 
-    </div>
-  </div>
+      <a href="/clear-data">Clear all session data</a>
+
+  {% for key, item in data %}
+      <dl class="nhsuk-summary-list nhsuk-u-margin-top-0 nhsuk-u-margin-bottom-0">
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">{{key}}</dt>
+          <dd class="nhsuk-summary-list__value">{{item}}</dd>
+          </div>
+      </dl>
+
+              {% endfor %}
+            {% endif %}
+
+{% endset %}
+
+{% if data|length == 0 %}
+
+{% from 'warning-callout/macro.njk' import warningCallout %}
+
+{{ warningCallout({
+  "heading": "Prototype session data",
+  "HTML": "<p>No session data has been stored.</p>"
+}) }}
+
+{% else %}
+
+{{ details({
+  "classes": "nhsuk-expander",
+  "text": "Session data stored",
+  "HTML": storedHTML
+}) }}
+
+
+
+
+{% endif %}
+
+
+{{ details({
+  "classes": "nhsuk-expander",
+  "text": latestVersion,
+  "HTML": v007HTML
+}) }}
+
+
+
+
+
+
+
+
+</div>
+
 {% endblock %}

@@ -51,7 +51,6 @@ const appViews = [
 
 const nunjucksConfig = {
   autoescape: true,
-  noCache: true,
 };
 
 nunjucksConfig.express = app;
@@ -102,7 +101,7 @@ if (useAutoStoreData === 'true') {
 function checkFiles() {
   const nodeModulesExists = fs.existsSync(path.join(__dirname, '/node_modules'));
   if (!nodeModulesExists) {
-    console.error('ERROR: Node module folder missing. Try running `npm install`'); // eslint-disable-line no-console
+    console.error('ERROR: Node module folder missing. Try running `npm install`');
     process.exit(0);
   }
 
@@ -123,7 +122,7 @@ const sessionDataDefaultsFile = path.join(dataDirectory, '/session-data-defaults
 const sessionDataDefaultsFileExists = fs.existsSync(sessionDataDefaultsFile);
 
 if (!sessionDataDefaultsFileExists) {
-  console.log('Creating session data defaults file'); // eslint-disable-line no-console
+  console.log('Creating session data defaults file');
   if (!fs.existsSync(dataDirectory)) {
     fs.mkdirSync(dataDirectory);
   }
@@ -220,14 +219,14 @@ app.post(/^\/([^.]+)$/, (req, res) => {
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error(`Page not found: ${req.path}`); // eslint-disable-line no-console
+  const err = new Error(`Page not found: ${req.path}`);
   err.status = 404;
   next(err);
 });
 
 // Display error
 app.use((err, req, res) => {
-  console.error(err.message); // eslint-disable-line no-console
+  console.error(err.message);
   res.status(err.status || 500);
   res.send(err.message);
 });
